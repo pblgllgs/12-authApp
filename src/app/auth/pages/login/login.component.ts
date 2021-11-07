@@ -30,9 +30,15 @@ export class LoginComponent {
       .subscribe( ok =>{
         if(ok === true){
           this.router.navigateByUrl('/dashboard');
-          
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Acceso consedido!!',
+            showConfirmButton: false,
+            timer: 1000
+          });
         }else{
-          Swal.fire('Error',ok, 'error')
+          Swal.fire('Error',ok, 'error');
         }
       })
     //

@@ -19,6 +19,23 @@ export class AuthService {
 
   constructor(private http:HttpClient) { }
 
+  register(name:string,email:string, password:string){
+    const url = `${this.baseUrl}/auth/new`;
+
+    const body = {name, email, password};
+
+    return this.http.post<AuthResponse>(url,body)
+      .pipe(
+        tap(({ok,token}) =>{
+          if(ok){
+            localStorage.setItem('token',token!);
+          }
+        }),
+        map( valid => valid.ok),
+        catchError(err => of(err.error.msg))
+      );
+  }
+
   login(email:string, password:string){
 
     const url = `${this.baseUrl}/auth`;
@@ -27,13 +44,9 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url,body)
       .pipe(
-        tap(resp =>{
+        tap((resp) =>{
           if(resp.ok){
             localStorage.setItem('token',resp.token!);
-            this._usuario = {
-              name: resp.name!,
-              uid: resp.uid!
-            }
           }
         }),
         map( valid => valid.ok),
@@ -53,12 +66,17 @@ export class AuthService {
           localStorage.setItem('token',resp.token!);
             this._usuario = {
               name: resp.name!,
-              uid: resp.uid!
+              uid: resp.uid!,
+              email:resp.email!
             }
           return resp.ok;
         }),
         catchError(err => of(false))
         );
+  }
+
+  logout(){
+    localStorage.clear();
   }
 
 }
