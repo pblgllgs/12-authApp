@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:4000/api'
+  //baseUrl: 'https://angular-auth-pblgllgs.herokuapp.com/api'
+  baseUrl: 'http://localhost:4000/api' 
 };
 
 /*
